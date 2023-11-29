@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace AdventOfCodeApp.Util
 {
-    internal class GetFile
+    internal class FileGetter
     {
         public int Year { get; set; } = 2023;
         public int Day { get; set; }
 
         public string BaseFileName => $"Adv{Year}{Day.ToString("00")}";
 
-        public GetFile(int day)
+        public FileGetter(int day)
         {
             Day = day;
         }
 
-        public GetFile(int year, int day) : this(day)
+        public FileGetter(int year, int day) : this(day)
         {
             Year = year;
         }
@@ -77,7 +77,7 @@ namespace AdventOfCodeApp.Util
 
         public bool IsActualFile(FileInfo file)
         {
-            return file.Name == BaseFileName;
+            return file.Name == $"{BaseFileName}.txt";
         }
     }
 }

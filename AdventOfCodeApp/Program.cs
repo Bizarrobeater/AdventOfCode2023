@@ -19,8 +19,10 @@ namespace AdventOfCodeApp
             //var app = new AdventOfCode(client, 1);
             var app = new AdventOfCode(client, 2023, 1);
 
-            //app.Run();
-            app.RunTest();
+            //app.Run(1);
+            app.RunTest(1);
+            //app.RunTest(2);
+            //app.Run(2);
 
         }
     }
