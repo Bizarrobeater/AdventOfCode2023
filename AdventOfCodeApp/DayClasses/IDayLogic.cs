@@ -9,7 +9,7 @@ namespace AdventOfCodeApp.DayClasses
 {
     internal interface IDayLogic
     {
-        public Dictionary<int, long> ExpectedTestResults { get; }
+        public Dictionary<int, Dictionary<int, long>> ExpectedTestResults { get; }
 
         public long RunQuestion1(FileInfo file);
         public long RunQuestion2(FileInfo file);

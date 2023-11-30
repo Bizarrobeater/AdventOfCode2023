@@ -31,25 +31,33 @@ namespace AdventOfCodeApp
 
         public void RunTest(int questionNumber)
         {
+            if (questionNumber != 1 || questionNumber != 2)
+                throw new Exception("Question number is not possible, only 1 or 2");
+            
             var files = FileGetter.GetFiles(true);
-            IDayLogic dayLogic = DayLogicFactory.CreateDayLogic(this);
-            Stopwatch stopwatch = new Stopwatch();
+            var questionFiles = CreateQuestionDict(files, questionNumber);
+            IDayLogic dayLogic = CreateDayLogic();
 
             Func<FileInfo, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
             long result;
-            foreach (var file in files)
+            long expectedResult;
+            foreach (KeyValuePair<int, FileInfo> questionFile in questionFiles)
             {
-                result = Run(questionFunction, file);
-                Console.WriteLine($"Expected result: {dayLogic});
+                result = Run(questionFunction, questionFile.Value);
+                expectedResult = dayLogic.ExpectedTestResults[questionNumber][questionFile.Key];
+                Console.WriteLine($"Expected result: {expectedResult}");
+                Console.WriteLine($"Correct Result: {result == expectedResult}");
             }
-
         }
 
         public void RunActual(int questionNumber)
         {
+            if (questionNumber != 1 || questionNumber != 2)
+                throw new Exception("Question number is not possible, only 1 or 2");
+
             var files = FileGetter.GetFiles();
 
-            IDayLogic dayLogic = DayLogicFactory.CreateDayLogic(this);
+            IDayLogic dayLogic = CreateDayLogic();
 
             Func<FileInfo, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
 
@@ -67,6 +75,36 @@ namespace AdventOfCodeApp
             stopwatch.Stop();
 
             Console.WriteLine($"Time taken in ms: {stopwatch.ElapsedMilliseconds}\nResult: {result}");
+            return result;
+        }
+
+        private Dictionary<int, FileInfo> CreateQuestionDict(List<FileInfo> files, int qNumber)
+        {
+            Dictionary<int, FileInfo> questionFiles = new Dictionary<int, FileInfo>();
+            string cleanName;
+            int testNumber;
+            string[] splitName;
+            foreach (FileInfo file in files)
+            {
+                cleanName = file.Name.Remove(file.Name.Length - file.Extension.Length);
+                splitName = cleanName.Split('-');
+                if (int.Parse(splitName[1]) != qNumber)
+                    continue;
+                
+                testNumber = int.Parse(splitName[2]);
+
+                questionFiles.Add(testNumber, file);
+            }
+
+            return questionFiles;
+        }
+
+        private IDayLogic CreateDayLogic()
+        {
+            IDayLogic result = DayLogicFactory.CreateDayLogic(this);
+
+            ArgumentNullException.ThrowIfNull(result);
+
             return result;
         }
         

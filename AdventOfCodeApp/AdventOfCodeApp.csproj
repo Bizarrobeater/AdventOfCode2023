@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="InputFiles\Adv202301-02.txt" />
+    <None Remove="InputFiles\Adv202301-1-02.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="InputFiles\Adv202301-02.txt" />
+    <Compile Include="InputFiles\Adv202301-1-02.txt" />
   </ItemGroup>
 
   <ItemGroup>
