@@ -31,7 +31,7 @@ namespace AdventOfCodeApp
 
         public void RunTest(int questionNumber)
         {
-            if (questionNumber != 1 || questionNumber != 2)
+            if (!(questionNumber == 1 || questionNumber == 2))
                 throw new Exception("Question number is not possible, only 1 or 2");
             
             var files = FileGetter.GetFiles(true);
@@ -52,7 +52,7 @@ namespace AdventOfCodeApp
 
         public void RunActual(int questionNumber)
         {
-            if (questionNumber != 1 || questionNumber != 2)
+            if (!(questionNumber == 1 || questionNumber == 2))
                 throw new Exception("Question number is not possible, only 1 or 2");
 
             var files = FileGetter.GetFiles();
