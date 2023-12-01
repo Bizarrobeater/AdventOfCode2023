@@ -1,9 +1,4 @@
 ﻿using AdventOfCodeApp.Util.FileReaders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdventOfCodeApp.DayClasses
 {
@@ -11,9 +6,10 @@ namespace AdventOfCodeApp.DayClasses
     {
         public Dictionary<int, Dictionary<int, long>> ExpectedTestResults => new Dictionary<int, Dictionary<int, long>>()
         {
-            {1, new Dictionary<int, long>()
+            {
+                1, new Dictionary<int, long>()
                 {
-                { 1, 142 }
+                    { 1, 142 }
                 }
             },
             {
@@ -24,7 +20,7 @@ namespace AdventOfCodeApp.DayClasses
             }
         };
 
-        Dictionary<string, char> WordToInt = new Dictionary<string, char>()
+        private Dictionary<string, char> WordToInt = new Dictionary<string, char>()
         {
             {"one", '1' },
             {"two", '2'},
@@ -47,26 +43,19 @@ namespace AdventOfCodeApp.DayClasses
             foreach (var line in lines)
             {
                 chars.Clear();
-                foreach(char c in line)
+                foreach (char c in line)
                 {
-                    if (int.TryParse(c.ToString(), out int _))
-                    {
+                    if (IsCharInt(c))
                         chars.Add(c);
-                    }
                 }
                 if (chars.Count > 0)
-                {
-                    lineNumbers.Add(int.Parse($"{chars[0]}{chars[chars.Count - 1]}"));
-                }                         
+                    lineNumbers.Add(GetNumberFromFoundNumbers(chars));
             }
 
             long result = 0;
             foreach (var number in lineNumbers)
-            {
                 result += number;
-            }
             return result;
-
         }
 
         public long RunQuestion2(FileInfo file)
@@ -84,7 +73,7 @@ namespace AdventOfCodeApp.DayClasses
                 for (int i = 0; i < line.Length; i++)
                 {
                     currChar = line[i];
-                    if (int.TryParse(currChar.ToString(), out int _))
+                    if (IsCharInt(currChar))
                     {
                         chars.Add(currChar);
                         continue;
@@ -92,23 +81,24 @@ namespace AdventOfCodeApp.DayClasses
                     substring = line.Substring(i);
                     if (TryGetNumberFromText(substring, out char numberChar))
                     {
-                        chars.Add(numberChar); 
+                        chars.Add(numberChar);
                         continue;
                     }
                 }
 
                 if (chars.Count > 0)
-                {
-                    lineNumbers.Add(int.Parse($"{chars[0]}{chars[chars.Count - 1]}"));
-                }
+                    lineNumbers.Add(GetNumberFromFoundNumbers(chars));
             }
 
             long result = 0;
             foreach (var number in lineNumbers)
-            {
                 result += number;
-            }
             return result;
+        }
+
+        private bool IsCharInt(char ch)
+        {
+            return int.TryParse(ch.ToString(), out int _);
         }
 
         private bool TryGetNumberFromText(string text, out char number)
@@ -123,6 +113,11 @@ namespace AdventOfCodeApp.DayClasses
             }
             number = '-';
             return false;
+        }
+
+        private int GetNumberFromFoundNumbers(List<char> numbers)
+        {
+            return int.Parse($"{numbers[0]}{numbers[numbers.Count - 1]}");
         }
     }
 }
