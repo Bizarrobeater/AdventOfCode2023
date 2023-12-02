@@ -18,7 +18,7 @@ namespace AdventOfCodeApp
 
         public FileGetter FileGetter { get; private set; }
         private Stopwatch _stopwatch;
-        private IDayLogic? _benchmarkLogic;
+        private IDayLogic? _benchmarkLogic = null;
 
 
         public AdventOfCode(HttpClient httpClient, int day)
@@ -140,7 +140,7 @@ namespace AdventOfCodeApp
 
         private IDayLogic CreateDayLogic()
         {
-            IDayLogic result = DayLogicFactory.CreateDayLogic(this);
+            IDayLogic? result = DayLogicFactory.CreateDayLogic(this);
 
             ArgumentNullException.ThrowIfNull(result);
 

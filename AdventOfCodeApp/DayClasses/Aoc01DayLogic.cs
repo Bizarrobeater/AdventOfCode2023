@@ -111,13 +111,14 @@ namespace AdventOfCodeApp.DayClasses
             foreach (var line in lines)
             {
                 chars.Clear();
+                // This for loop finds the first number in the sequence
                 for (int i = 0; i < line.Length; i++)
                 {
                     currChar = line[i];
                     if (IsCharInt(currChar))
                     {
                         chars.Add(currChar);
-                        continue;
+                        break;
                     }
                     if (!CharToWordToInt.TryGetValue(currChar, out dict))
                         continue;
@@ -125,8 +126,28 @@ namespace AdventOfCodeApp.DayClasses
                     if (TryGetNumberFromText(substring, dict, out char numberChar))
                     {
                         chars.Add(numberChar);
-                        continue;
+                        break;
                     }
+                }
+
+                // this for loop finds the last number in the sequence
+                for (int i = line.Length - 1;i >= 0; i--) 
+                {
+                    currChar = line[i];
+                    if (IsCharInt(currChar))
+                    {
+                        chars.Add(currChar);
+                        break;
+                    }
+                    if (!CharToWordToInt.TryGetValue(currChar, out dict))
+                        continue;
+                    substring = line.Substring(i);
+                    if (TryGetNumberFromText(substring, dict, out char numberChar))
+                    {
+                        chars.Add(numberChar);
+                        break;
+                    }
+
                 }
 
                 if (chars.Count > 0)

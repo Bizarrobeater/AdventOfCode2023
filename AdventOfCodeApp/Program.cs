@@ -33,7 +33,7 @@ namespace AdventOfCodeApp
 
         public static void Benchmark(AdventOfCode app, int question, bool ticks = false)
         {
-            int runs = 100_000;
+            int runs = 1_000;
             List<long> timeTaken = new List<long>();
             Dictionary<long, int> resultAmounts = new Dictionary<long, int>();
             long time;
