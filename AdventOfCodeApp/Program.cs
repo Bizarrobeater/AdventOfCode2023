@@ -17,16 +17,16 @@ namespace AdventOfCodeApp
             
             var client = host.Services.GetRequiredService<HttpClient>();
 
-            var app = new AdventOfCode(client, 2023, 1);
-            //var app = new AdventOfCode(client, 2023, 2);
+            //var app = new AdventOfCode(client, 2023, 1);
+            var app = new AdventOfCode(client, 2023, 2);
 
             //app.RunActual(1);
             //app.RunTest(1);
             //app.RunTest(2);
-            //app.RunActual(2);
+            app.RunActual(2);
 
-            Benchmark(app, 2);
-            Console.ReadKey();
+            //Benchmark(app, 2);
+            //Console.ReadKey();
         }
 
         public static void Benchmark(AdventOfCode app, int question)
