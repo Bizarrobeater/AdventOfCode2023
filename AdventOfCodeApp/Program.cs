@@ -26,8 +26,8 @@ namespace AdventOfCodeApp
             //app.RunTest(2);
             //app.RunActual(2);
 
-            Benchmark(app, 2);
-            //Benchmark(app, 2, ticks: true);
+            //Benchmark(app, 2);
+            Benchmark(app, 2, ticks: true);
             Console.ReadKey();
         }
 

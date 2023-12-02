@@ -1,4 +1,5 @@
 ﻿using AdventOfCodeApp.Util.FileReaders;
+using System.Data.SqlTypes;
 
 namespace AdventOfCodeApp.DayClasses
 {
@@ -104,49 +105,21 @@ namespace AdventOfCodeApp.DayClasses
             var lines = reader.GetReadableFileContent(file, isBenchmark);
             List<int> lineNumbers = new List<int>();
             List<char> chars = new List<char>();
-            string substring;
-            char currChar;
-            Dictionary<string, char>? dict;
-
             foreach (var line in lines)
             {
                 chars.Clear();
                 // This for loop finds the first number in the sequence
                 for (int i = 0; i < line.Length; i++)
                 {
-                    currChar = line[i];
-                    if (IsCharInt(currChar))
-                    {
-                        chars.Add(currChar);
+                    if (CheckAndAddChar(line, i, chars))
                         break;
-                    }
-                    if (!CharToWordToInt.TryGetValue(currChar, out dict))
-                        continue;
-                    substring = line.Substring(i);
-                    if (TryGetNumberFromText(substring, dict, out char numberChar))
-                    {
-                        chars.Add(numberChar);
-                        break;
-                    }
                 }
 
                 // this for loop finds the last number in the sequence
                 for (int i = line.Length - 1;i >= 0; i--) 
                 {
-                    currChar = line[i];
-                    if (IsCharInt(currChar))
-                    {
-                        chars.Add(currChar);
+                    if (CheckAndAddChar(line, i, chars))
                         break;
-                    }
-                    if (!CharToWordToInt.TryGetValue(currChar, out dict))
-                        continue;
-                    substring = line.Substring(i);
-                    if (TryGetNumberFromText(substring, dict, out char numberChar))
-                    {
-                        chars.Add(numberChar);
-                        break;
-                    }
 
                 }
 
@@ -158,6 +131,26 @@ namespace AdventOfCodeApp.DayClasses
             foreach (var number in lineNumbers)
                 result += number;
             return result;
+        }
+
+        private bool CheckAndAddChar(string line, int index, List<char> chars)
+        {
+            char currChar = line[index];
+            string substring;
+            if (IsCharInt(currChar))
+            {
+                chars.Add(currChar);
+                return true;
+            }
+            if (!CharToWordToInt.TryGetValue(currChar, out Dictionary<string, char>? dict))
+                return false;
+            substring = line.Substring(index);
+            if (TryGetNumberFromText(substring, dict, out char numberChar))
+            {
+                chars.Add(numberChar);
+                return true;
+            }
+            return false;
         }
 
         private bool IsCharInt(char ch)
@@ -212,6 +205,15 @@ namespace AdventOfCodeApp.DayClasses
             Median: 6955
             Max Time: 27411
             Min Time: 5937
+
+        Second improvement, but refactored (100.000 runs)
+            Benchmark in ticks:
+            First Run Time: 5825
+            Last Run Time: 349858
+            Average: 6159,99742
+            Median: 6060
+            Max Time: 349858
+            Min Time: 5825
          */
     }
 }
