@@ -64,6 +64,23 @@ namespace AdventOfCodeApp
             Run(questionFunction, files[0]);
         }
 
+        public long RunActualBenchmark(int questionNumber)
+        {
+            if (!(questionNumber == 1 || questionNumber == 2))
+                throw new Exception("Question number is not possible, only 1 or 2");
+            
+            var files = FileGetter.GetFiles();
+            IDayLogic dayLogic = CreateDayLogic();
+            Func<FileInfo, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            questionFunction(files[0]);
+            stopwatch.Stop();
+            return stopwatch.ElapsedMilliseconds;
+        }
+
         private long Run(Func<FileInfo, long> questionFunction, FileInfo file)
         {
             Stopwatch stopwatch = new Stopwatch();
