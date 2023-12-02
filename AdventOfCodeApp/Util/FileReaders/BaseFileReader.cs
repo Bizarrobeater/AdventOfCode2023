@@ -8,6 +8,7 @@ namespace AdventOfCodeApp.Util.FileReaders
 {
     internal abstract class BaseFileReader<T>
     {
+        public T? BenchmarkValue { get; private set; }
 
         private string ReadFile(FileInfo file)
         {
@@ -19,10 +20,18 @@ namespace AdventOfCodeApp.Util.FileReaders
             return result;
         }
 
-        public T GetReadableFileContent(FileInfo file)
+        public T GetReadableFileContent(FileInfo file, bool isBenchmark = false)
         {
+            if (isBenchmark && BenchmarkValue != null)
+                return BenchmarkValue;
+
             string contentResult = ReadFile(file);
-            return ConvertFileContentToReadable(contentResult);
+            T result = ConvertFileContentToReadable(contentResult);
+
+            if (isBenchmark) 
+                BenchmarkValue = result;
+
+            return result;
         }
 
         protected abstract T ConvertFileContentToReadable(string content);

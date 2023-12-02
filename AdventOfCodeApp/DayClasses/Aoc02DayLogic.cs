@@ -24,9 +24,9 @@ namespace AdventOfCodeApp.DayClasses
                 }
             }
         };
-        public long RunQuestion1(FileInfo file)
+        public long RunQuestion1(FileInfo file, bool isBenchmark = false) 
         {
-            var splitFile = InputSplitter(file);
+            var splitFile = InputSplitter(file, isBenchmark);
             
             Day2Game game;
             long result = 0;
@@ -39,9 +39,9 @@ namespace AdventOfCodeApp.DayClasses
             return result;
         }
 
-        public long RunQuestion2(FileInfo file)
+        public long RunQuestion2(FileInfo file, bool isBenchmark = false)
         {
-            var splitFile = InputSplitter(file);
+            var splitFile = InputSplitter(file, isBenchmark);
 
             Day2Game game;
             long result = 0;
@@ -54,10 +54,10 @@ namespace AdventOfCodeApp.DayClasses
             return result;
         }
 
-        private string[] InputSplitter(FileInfo file)
+        private string[] InputSplitter(FileInfo file, bool isBenchmark)
         {
             var lineReader = new LineSplitFileReader();
-            string[] output = lineReader.GetReadableFileContent(file);
+            string[] output = lineReader.GetReadableFileContent(file, isBenchmark);
 
             return output;
         }

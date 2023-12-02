@@ -16,10 +16,15 @@ namespace AdventOfCodeApp
         public int Day { get; private set; }
         public HttpClient HttpClient { get; private set; }
 
-        public FileGetter FileGetter => new FileGetter(Year, Day);
+        public FileGetter FileGetter { get; private set; }
+        private Stopwatch _stopwatch;
+        private IDayLogic? _benchmarkLogic;
+
 
         public AdventOfCode(HttpClient httpClient, int day)
         {
+            _stopwatch = new Stopwatch();
+            FileGetter = new FileGetter(Year, day);
             HttpClient = httpClient;
             Day = day;
         }
@@ -27,6 +32,7 @@ namespace AdventOfCodeApp
         public AdventOfCode(HttpClient httpClient, int year, int day) : this(httpClient, day)
         {
             Year = year;
+            FileGetter.Year = year;
         }
 
         public void RunTest(int questionNumber)
@@ -38,7 +44,7 @@ namespace AdventOfCodeApp
             var questionFiles = CreateQuestionDict(files, questionNumber);
             IDayLogic dayLogic = CreateDayLogic();
 
-            Func<FileInfo, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
+            Func<FileInfo, bool, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
             long result;
             long expectedResult;
             foreach (KeyValuePair<int, FileInfo> questionFile in questionFiles)
@@ -59,39 +65,55 @@ namespace AdventOfCodeApp
 
             IDayLogic dayLogic = CreateDayLogic();
 
-            Func<FileInfo, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
+            Func<FileInfo, bool, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
 
             Run(questionFunction, files[0]);
         }
 
-        public long RunActualBenchmark(int questionNumber)
+        public long RunActualBenchmarkTicks(int questionNumber)
+        {
+            if (!(questionNumber == 1 || questionNumber == 2))
+                throw new Exception("Question number is not possible, only 1 or 2");
+
+            var files = FileGetter.GetFiles(isBenchMark: true);
+            IDayLogic dayLogic = _benchmarkLogic == null ? CreateDayLogic() : _benchmarkLogic;
+            Func<FileInfo, bool, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
+            _stopwatch.Reset();
+            _stopwatch.Start();
+
+            questionFunction(files[0], true);
+            _stopwatch.Stop();
+            return _stopwatch.ElapsedTicks;
+        }
+
+        public long RunActualBenchmarkMilliseconds(int questionNumber)
         {
             if (!(questionNumber == 1 || questionNumber == 2))
                 throw new Exception("Question number is not possible, only 1 or 2");
             
-            var files = FileGetter.GetFiles();
-            IDayLogic dayLogic = CreateDayLogic();
-            Func<FileInfo, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
+            var files = FileGetter.GetFiles(isBenchMark: true);
+            IDayLogic dayLogic = _benchmarkLogic == null ? CreateDayLogic() : _benchmarkLogic;
+            Func<FileInfo, bool, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
 
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            _stopwatch.Reset();
+            _stopwatch.Start();
 
-            questionFunction(files[0]);
-            stopwatch.Stop();
-            return stopwatch.ElapsedMilliseconds;
+            questionFunction(files[0], true);
+            _stopwatch.Stop();
+            return _stopwatch.ElapsedMilliseconds;
         }
 
-        private long Run(Func<FileInfo, long> questionFunction, FileInfo file)
+        private long Run(Func<FileInfo, bool, long> questionFunction, FileInfo file)
         {
-            Stopwatch stopwatch = new Stopwatch();
+            
+            _stopwatch.Reset();
+            _stopwatch.Start();
 
-            stopwatch.Start();
+            long result = questionFunction(file, false);
 
-            long result = questionFunction(file);
+            _stopwatch.Stop();
 
-            stopwatch.Stop();
-
-            Console.WriteLine($"Time taken in ms: {stopwatch.ElapsedMilliseconds}\nResult: {result}");
+            Console.WriteLine($"Time taken in ms: {_stopwatch.ElapsedMilliseconds}\nResult: {result}");
             return result;
         }
 

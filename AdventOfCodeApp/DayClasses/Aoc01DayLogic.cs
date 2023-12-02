@@ -33,10 +33,10 @@ namespace AdventOfCodeApp.DayClasses
             {"nine", '9' },
         };
 
-        public long RunQuestion1(FileInfo file)
+        public long RunQuestion1(FileInfo file, bool isBenchmark = false)
         {
             var reader = new LineSplitFileReader();
-            var lines = reader.GetReadableFileContent(file);
+            var lines = reader.GetReadableFileContent(file, isBenchmark);
             List<int> lineNumbers = new List<int>();
             List<char> chars = new List<char>();
 
@@ -58,10 +58,10 @@ namespace AdventOfCodeApp.DayClasses
             return result;
         }
 
-        public long RunQuestion2(FileInfo file)
+        public long RunQuestion2(FileInfo file, bool isBenchmark = false)
         {
             var reader = new LineSplitFileReader();
-            var lines = reader.GetReadableFileContent(file);
+            var lines = reader.GetReadableFileContent(file, isBenchmark);
             List<int> lineNumbers = new List<int>();
             List<char> chars = new List<char>();
             string substring;

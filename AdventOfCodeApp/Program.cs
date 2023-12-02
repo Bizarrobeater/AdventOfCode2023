@@ -17,30 +17,39 @@ namespace AdventOfCodeApp
             
             var client = host.Services.GetRequiredService<HttpClient>();
 
-            //var app = new AdventOfCode(client, 2023, 1);
-            var app = new AdventOfCode(client, 2023, 2);
+            var app = new AdventOfCode(client, 2023, 1);
+            //var app = new AdventOfCode(client, 2023, 2);
+            //var app = new AdventOfCode(client, 2023, 3);
 
             //app.RunActual(1);
             //app.RunTest(1);
             //app.RunTest(2);
-            app.RunActual(2);
+            //app.RunActual(2);
 
             //Benchmark(app, 2);
-            //Console.ReadKey();
+            Benchmark(app, 2, ticks: true);
+            Console.ReadKey();
         }
 
-        public static void Benchmark(AdventOfCode app, int question)
+        public static void Benchmark(AdventOfCode app, int question, bool ticks = false)
         {
-            int runs = 1_000;
+            int runs = 100_000;
             List<long> timeTaken = new List<long>();
+            Dictionary<long, int> resultAmounts = new Dictionary<long, int>();
+            long time;
+            Func<int, long> benchmarkFunction = ticks ? app.RunActualBenchmarkTicks : app.RunActualBenchmarkMilliseconds;
 
             for (int i = 0; i < runs; i++)
             {
-                timeTaken.Add(app.RunActualBenchmark(question));
+                time = benchmarkFunction(question);
+                timeTaken.Add(time);
+                if (!resultAmounts.ContainsKey(time))
+                    resultAmounts[time] = 0;
+                resultAmounts[time]++;
             }
             timeTaken.Sort();
-
-            Console.WriteLine("Benchmark:");
+            string explainText = ticks ? "in ticks" : "in milliseconds";
+            Console.WriteLine($"Benchmark {explainText}:");
             Console.WriteLine($"First Run Time: {timeTaken[0]}");
             Console.WriteLine($"Last Run Time: {timeTaken[timeTaken.Count - 1]}");
             Console.WriteLine($"Average: {timeTaken.Average()}");
@@ -48,20 +57,15 @@ namespace AdventOfCodeApp
             Console.WriteLine($"Max Time: {timeTaken.Max()}");
             Console.WriteLine($"Min Time: {timeTaken.Min()}");
 
-            Dictionary<long, int> resultAmounts = new Dictionary<long, int>();
+            if (ticks)
+                return;
 
-            foreach ( long amount in timeTaken )
-            {
-                if (!resultAmounts.ContainsKey( amount ) ) 
-                {
-                    resultAmounts[amount] = 0;
-                }
-                resultAmounts[amount]++;
-            }
             Console.WriteLine("Result counts:");
-            foreach(KeyValuePair<long, int> pair in resultAmounts)
+            List<long> uniqueTimes = resultAmounts.Keys.ToList();
+            uniqueTimes.Sort();
+            foreach(long uniqueTime in uniqueTimes)
             {
-                Console.WriteLine($"Time taken - {pair.Key}, Count - {pair.Value}");
+                Console.WriteLine($"Time taken - {uniqueTime}, Count - {resultAmounts[uniqueTime]}");
             }
         }
     }

@@ -13,6 +13,8 @@ namespace AdventOfCodeApp.Util
 
         public string BaseFileName => $"Adv{Year}{Day.ToString("00")}";
 
+        public List<FileInfo>? BenchMarkFile { get; private set; }
+
         public FileGetter(int day)
         {
             Day = day;
@@ -50,8 +52,11 @@ namespace AdventOfCodeApp.Util
             return foundDir;
         }
 
-        public List<FileInfo> GetFiles(bool isTest = false)
+        public List<FileInfo> GetFiles(bool isTest = false, bool isBenchMark = false)
         {
+            if (isBenchMark && BenchMarkFile != null)
+                return BenchMarkFile;
+
             var fileDir = GetFileFolder();
             if (!fileDir.Exists)
                 throw new Exception("Some error regarding file folders");
@@ -67,6 +72,9 @@ namespace AdventOfCodeApp.Util
                     result.Add(file);
                 }
             }
+
+            if (isBenchMark)
+                BenchMarkFile = result;
             return result;
         }
 

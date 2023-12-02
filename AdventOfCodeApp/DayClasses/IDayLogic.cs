@@ -11,8 +11,8 @@ namespace AdventOfCodeApp.DayClasses
     {
         public Dictionary<int, Dictionary<int, long>> ExpectedTestResults { get; }
 
-        public long RunQuestion1(FileInfo file);
-        public long RunQuestion2(FileInfo file);
+        public long RunQuestion1(FileInfo file, bool isBenchmark = false);
+        public long RunQuestion2(FileInfo file, bool isBenchmark = false);
 
     }
 }
