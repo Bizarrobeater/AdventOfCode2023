@@ -183,5 +183,35 @@ namespace AdventOfCodeApp.DayClasses
         {
             return int.Parse($"{numbers[0]}{numbers[numbers.Count - 1]}");
         }
+
+        /*
+        Benchmark improvements
+        Original 1000 runs
+            Benchmark in ticks:
+            First Run Time: 60567
+            Last Run Time: 124080
+            Average: 64096,611
+            Median: 62085
+            Max Time: 124080
+            Min Time: 60567
+
+        First improvement - only check chars that are relevant (CharToWordToInt dict)
+            Benchmark in ticks:
+            First Run Time: 12729
+            Last Run Time: 64274
+            Average: 15363,456
+            Median: 13589
+            Max Time: 64274
+            Min Time: 12729
+        
+        Second improvement - only look for first and last number
+            Benchmark in ticks:
+            First Run Time: 5937
+            Last Run Time: 27411
+            Average: 7195,603
+            Median: 6955
+            Max Time: 27411
+            Min Time: 5937
+         */
     }
 }
