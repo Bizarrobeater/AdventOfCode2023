@@ -20,6 +20,46 @@ namespace AdventOfCodeApp.DayClasses
             }
         };
 
+        Dictionary<char, Dictionary<string, char>> CharToWordToInt = new Dictionary<char, Dictionary<string, char>>()
+        {
+            {'o', new Dictionary<string, char>()
+                {
+                    { "one", '1' }
+                }
+            },
+            {
+                't', new Dictionary<string, char>()
+                {
+                    {"two", '2' },
+                    {"three", '3' }
+                }
+            },
+            { 'f', new Dictionary<string, char>()
+                {
+                    { "four", '4' },
+                    {"five", '5' },
+                }
+            },
+            {
+                's', new Dictionary<string, char>()
+                {
+                    {"six", '6' },
+                    { "seven", '7' }
+                }
+            },
+            { 'e', new Dictionary<string, char>()
+            {
+                {"eight", '8' },
+            }
+            },
+            {
+                'n', new Dictionary<string, char>()
+                {
+                    {"nine", '9' }
+                }
+            }
+        };
+
         private Dictionary<string, char> WordToInt = new Dictionary<string, char>()
         {
             {"one", '1' },
@@ -66,6 +106,7 @@ namespace AdventOfCodeApp.DayClasses
             List<char> chars = new List<char>();
             string substring;
             char currChar;
+            Dictionary<string, char>? dict;
 
             foreach (var line in lines)
             {
@@ -78,8 +119,10 @@ namespace AdventOfCodeApp.DayClasses
                         chars.Add(currChar);
                         continue;
                     }
+                    if (!CharToWordToInt.TryGetValue(currChar, out dict))
+                        continue;
                     substring = line.Substring(i);
-                    if (TryGetNumberFromText(substring, out char numberChar))
+                    if (TryGetNumberFromText(substring, dict, out char numberChar))
                     {
                         chars.Add(numberChar);
                         continue;
@@ -101,9 +144,9 @@ namespace AdventOfCodeApp.DayClasses
             return int.TryParse(ch.ToString(), out int _);
         }
 
-        private bool TryGetNumberFromText(string text, out char number)
+        private bool TryGetNumberFromText(string text, Dictionary<string, char> inputDict, out char number)
         {
-            foreach (KeyValuePair<string, char> pair in WordToInt)
+            foreach (KeyValuePair<string, char> pair in inputDict)
             {
                 if (text.StartsWith(pair.Key))
                 {
