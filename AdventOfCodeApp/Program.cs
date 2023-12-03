@@ -17,23 +17,24 @@ namespace AdventOfCodeApp
             
             var client = host.Services.GetRequiredService<HttpClient>();
 
-            var app = new AdventOfCode(client, 2023, 1);
+            //var app = new AdventOfCode(client, 2023, 1);
             //var app = new AdventOfCode(client, 2023, 2);
-            //var app = new AdventOfCode(client, 2023, 3);
+            var app = new AdventOfCode(client, 2023, 3);
 
-            //app.RunActual(1);
             //app.RunTest(1);
+            //app.RunActual(1);
+
             //app.RunTest(2);
             //app.RunActual(2);
 
             //Benchmark(app, 2);
-            Benchmark(app, 2, ticks: true);
-            Console.ReadKey();
+            Benchmark(app, 1, ticks: true);
+            //Console.ReadKey();
         }
 
         public static void Benchmark(AdventOfCode app, int question, bool ticks = false)
         {
-            int runs = 100_000;
+            int runs = 1_000;
             List<long> timeTaken = new List<long>();
             Dictionary<long, int> resultAmounts = new Dictionary<long, int>();
             long time;

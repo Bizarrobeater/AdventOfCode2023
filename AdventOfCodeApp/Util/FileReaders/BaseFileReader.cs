@@ -34,6 +34,19 @@ namespace AdventOfCodeApp.Util.FileReaders
             return result;
         }
 
+        public T GetReadableFileContent(string content, bool isBenchmark)
+        {
+            if (isBenchmark && BenchmarkValue != null)
+                return BenchmarkValue;
+
+            T result = ConvertFileContentToReadable(content);
+
+            if (isBenchmark)
+                BenchmarkValue = result;
+
+            return result;
+        }
+
         protected abstract T ConvertFileContentToReadable(string content);
     }
 }
