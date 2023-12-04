@@ -19,7 +19,8 @@ namespace AdventOfCodeApp
 
             //var app = new AdventOfCode(client, 2023, 1);
             //var app = new AdventOfCode(client, 2023, 2);
-            var app = new AdventOfCode(client, 2023, 3);
+            //var app = new AdventOfCode(client, 2023, 3);
+            var app = new AdventOfCode(client, 2023, 4);
 
             //app.RunTest(1);
             //app.RunActual(1);
@@ -28,8 +29,8 @@ namespace AdventOfCodeApp
             //app.RunActual(2);
 
             //Benchmark(app, 2);
-            Benchmark(app, 1, ticks: true);
-            //Console.ReadKey();
+            Benchmark(app, 2, ticks: true);
+            Console.ReadKey();
         }
 
         public static void Benchmark(AdventOfCode app, int question, bool ticks = false)
