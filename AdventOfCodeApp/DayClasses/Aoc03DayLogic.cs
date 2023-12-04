@@ -226,5 +226,18 @@ namespace AdventOfCodeApp.DayClasses
                 }
             }
         }
+
+        /*
+          Question 1:
+            First run, no optimization (1000 runs)
+                Benchmark in ticks:
+                First Run Time: 359.552
+                Last Run Time: 1.534.775
+                Average: 577.600,306
+                Median: 533.149
+                Max Time: 1.534.775
+                Min Time: 359.552
+            
+         */
     }
 }
