@@ -8,7 +8,7 @@ namespace AdventOfCodeApp.Util.FileReaders
 {
     internal abstract class BaseFileReader<T>
     {
-        public T? BenchmarkValue { get; private set; }
+        public static T? BenchmarkValue { get; private set; }
 
         private string ReadFile(FileInfo file)
         {
