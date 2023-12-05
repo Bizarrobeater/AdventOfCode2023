@@ -77,7 +77,7 @@ namespace AdventOfCodeApp
             Run(questionFunction, files[0]);
         }
 
-        public long RunActualBenchmarkTicks(int questionNumber)
+        public void RunActualBenchmark(int questionNumber)
         {
             if (!(questionNumber == 1 || questionNumber == 2))
                 throw new Exception("Question number is not possible, only 1 or 2");
@@ -90,23 +90,25 @@ namespace AdventOfCodeApp
 
             questionFunction(files[0], true);
             _stopwatch.Stop();
+        }
+
+        public long RunActualBenchmarkTicks(int questionNumber)
+        {
+            RunActualBenchmark(questionNumber);
             return _stopwatch.ElapsedTicks;
         }
 
+        public long RunActualBenchmarkMicroseconds(int questionNumber)
+        {
+            RunActualBenchmark(questionNumber);
+            return (long)_stopwatch.Elapsed.TotalMicroseconds;
+        }
+
+
+
         public long RunActualBenchmarkMilliseconds(int questionNumber)
         {
-            if (!(questionNumber == 1 || questionNumber == 2))
-                throw new Exception("Question number is not possible, only 1 or 2");
-            
-            var files = FileGetter.GetFiles(isBenchMark: true);
-            IDayLogic dayLogic = _benchmarkLogic == null ? CreateDayLogic() : _benchmarkLogic;
-            Func<FileInfo, bool, long> questionFunction = questionNumber == 1 ? dayLogic.RunQuestion1 : dayLogic.RunQuestion2;
-
-            _stopwatch.Reset();
-            _stopwatch.Start();
-
-            questionFunction(files[0], true);
-            _stopwatch.Stop();
+            RunActualBenchmark(questionNumber);
             return _stopwatch.ElapsedMilliseconds;
         }
 

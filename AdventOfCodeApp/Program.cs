@@ -27,20 +27,27 @@ namespace AdventOfCodeApp
             //app.RunActual(1);
 
             //app.RunTest(2);
-            app.RunActual(2);
+            //app.RunActual(2);
 
             //Benchmark(app, 2);
+            Benchmark(app, 2, "micro");
             //Benchmark(app, 2, ticks: true);
             //Console.ReadKey();
         }
 
-        public static void Benchmark(AdventOfCode app, int question, bool ticks = false)
+        public static void Benchmark(AdventOfCode app, int question, string type = "milli")
         {
             int runs = 100_000;
             List<long> timeTaken = new List<long>();
             Dictionary<long, int> resultAmounts = new Dictionary<long, int>();
             long time;
-            Func<int, long> benchmarkFunction = ticks ? app.RunActualBenchmarkTicks : app.RunActualBenchmarkMilliseconds;
+            Func<int, long> benchmarkFunction;
+            if (type == "milli")
+                benchmarkFunction = app.RunActualBenchmarkMilliseconds;
+            else if (type == "micro")
+                benchmarkFunction = app.RunActualBenchmarkMicroseconds;
+            else
+                benchmarkFunction = app.RunActualBenchmarkTicks;
 
             for (int i = 0; i < runs; i++)
             {
@@ -51,7 +58,7 @@ namespace AdventOfCodeApp
                 resultAmounts[time]++;
             }
             timeTaken.Sort();
-            string explainText = ticks ? "in ticks" : "in milliseconds";
+            string explainText = type != "milli" && type != "micro" ? "in ticks" : $"in {type}seconds";
             Console.WriteLine($"Benchmark {explainText}:");
             Console.WriteLine($"First Run Time: {timeTaken[0]}");
             Console.WriteLine($"Last Run Time: {timeTaken[timeTaken.Count - 1]}");
@@ -60,7 +67,7 @@ namespace AdventOfCodeApp
             Console.WriteLine($"Max Time: {timeTaken.Max()}");
             Console.WriteLine($"Min Time: {timeTaken.Min()}");
 
-            if (ticks)
+            if (type != "milli" && type != "micro")
                 return;
 
             Console.WriteLine("Result counts:");
