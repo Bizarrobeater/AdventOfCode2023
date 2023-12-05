@@ -3,6 +3,7 @@ using AdventOfCodeApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -120,6 +121,7 @@ namespace AdventOfCodeApp
             _stopwatch.Stop();
 
             Console.WriteLine($"Time taken in ms: {_stopwatch.ElapsedMilliseconds}\nResult: {result}");
+            Console.WriteLine($"Readable result: {result.ToString("##,#",CultureInfo.CreateSpecificCulture("da"))}");
             return result;
         }
 
