@@ -14,22 +14,28 @@ namespace AdventOfCodeApp
     {
         public int Year { get; private set; } = 2023;
         public int Day { get; private set; }
-        public HttpClient HttpClient { get; private set; }
 
         public FileGetter FileGetter { get; private set; }
         private Stopwatch _stopwatch;
         private IDayLogic? _benchmarkLogic = null;
 
+        public AdventOfCode()
+        {
+            var today = DateTime.Now;
+            Year = today.Year;
+            Day = today.Day;
+            FileGetter = new FileGetter(Year, Day);
+            _stopwatch = new Stopwatch();
+        }
 
-        public AdventOfCode(HttpClient httpClient, int day)
+        public AdventOfCode(int day)
         {
             _stopwatch = new Stopwatch();
             FileGetter = new FileGetter(Year, day);
-            HttpClient = httpClient;
             Day = day;
         }
 
-        public AdventOfCode(HttpClient httpClient, int year, int day) : this(httpClient, day)
+        public AdventOfCode(int year, int day) : this(day)
         {
             Year = year;
             FileGetter.Year = year;
