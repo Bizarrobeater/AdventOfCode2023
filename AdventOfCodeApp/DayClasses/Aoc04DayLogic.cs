@@ -30,7 +30,7 @@ namespace AdventOfCodeApp.DayClasses
             long cardResult;
             string[] splitLine;
             var reader = new LineSplitFileReader();
-            string[] cards = reader.GetReadableFileContent(file);
+            string[] cards = reader.GetReadableFileContent(file, isBenchmark);
             HashSet<int> winningNumbers;
             HashSet<int> numbers;
 
@@ -77,7 +77,7 @@ namespace AdventOfCodeApp.DayClasses
             long cardResult;
             string[] splitLine;
             var reader = new LineSplitFileReader();
-            string[] cards = reader.GetReadableFileContent(file);
+            string[] cards = reader.GetReadableFileContent(file, isBenchmark);
             HashSet<int> winningNumbers;
             HashSet<int> numbers;
             var cardDict = new Dictionary<int, long>();

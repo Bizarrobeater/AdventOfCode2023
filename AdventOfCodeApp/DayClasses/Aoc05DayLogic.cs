@@ -28,7 +28,7 @@ namespace AdventOfCodeApp.DayClasses
         public long RunQuestion1(FileInfo file, bool isBenchmark = false)
         {
             var reader = new Aoc05FileReader();
-            var splitContent = reader.GetReadableFileContent(file);
+            var splitContent = reader.GetReadableFileContent(file, isBenchmark);
             var seeds = SplitInitialSeedString(splitContent[0]);
             var currValues = seeds;
             Mapper currMapper;
@@ -67,7 +67,7 @@ namespace AdventOfCodeApp.DayClasses
         public long RunQuestion2(FileInfo file, bool isBenchmark = false)
         {
             var reader = new Aoc05FileReader();
-            var splitContent = reader.GetReadableFileContent(file);
+            var splitContent = reader.GetReadableFileContent(file, isBenchmark);
             var seeds = SplitInitialSeedStringQ2(splitContent[0]);
             var currValues = seeds;
             List<SeedRange> newRanges;

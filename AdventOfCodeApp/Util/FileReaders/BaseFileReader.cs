@@ -20,7 +20,7 @@ namespace AdventOfCodeApp.Util.FileReaders
             return result;
         }
 
-        public T GetReadableFileContent(FileInfo file, bool isBenchmark = false)
+        public T GetReadableFileContent(FileInfo file, bool isBenchmark)
         {
             if (isBenchmark && BenchmarkValue != null)
                 return BenchmarkValue;
