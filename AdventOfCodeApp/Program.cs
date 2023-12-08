@@ -27,10 +27,10 @@ namespace AdventOfCodeApp
             //app.RunActual(1);
 
             //app.RunTest(2);
-            //app.RunActual(2);
+            app.RunActual(2);
 
             //Benchmark(app, 2);
-            Benchmark(app, 2, "micro");
+            //Benchmark(app, 2, "micro");
             //Benchmark(app, 2, ticks: true);
             //Console.ReadKey();
         }
