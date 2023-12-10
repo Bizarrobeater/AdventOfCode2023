@@ -135,14 +135,21 @@ namespace AdventOfCodeApp.DayClasses
             var activeNonLoopTiles = FindNonLoopEdges(loop, pipes);
             HashSet<Position> inactiveTiles = new HashSet<Position>();
             HashSet<Position> tempActiveTiles;
+            Position newPos;
 
-
+            HashSet<Position> neighbours;
             while (activeNonLoopTiles.Count > 0)
             {
                 tempActiveTiles = new HashSet<Position>();
                 foreach ( var tile in activeNonLoopTiles)
                 {
+                    neighbours = GetPositionNeibours(tile, inactiveTiles, activeNonLoopTiles);
+                    foreach ( var neighbour in neighbours)
+                    {
+                        if (loop.Contains(new PositionQ2(neighbour.X, neighbour.Y)))
+                            newPos = TravelNextToLoop(
 
+                    }
                 }
             }
 
@@ -150,7 +157,38 @@ namespace AdventOfCodeApp.DayClasses
             return 0;
         }
 
-        private Position TravelBetweenPipes(PositionQ2 Start)
+        private Position TravelNextToLoop(Position fromPos, Position pipePos, HashSet<PositionQ2> loop)
+        {
+            TravelDirectionEnum direction = TravelDirectionEnum.None;
+            if (fromPos.Y < pipePos.Y)
+                direction = TravelDirectionEnum.NorthSouth;
+            else if (fromPos.Y > pipePos.Y)
+                direction = TravelDirectionEnum.SouthNorth;
+            else if (fromPos.X < pipePos.X)
+                direction = TravelDirectionEnum.WestEast;
+            else if (fromPos.X > pipePos.X)
+                direction = TravelDirectionEnum.EastWest;
+
+            if (direction == TravelDirectionEnum.None) throw new Exception("This shouldn't happen");
+
+            switch (direction)
+            {
+                case TravelDirectionEnum.NorthSouth:
+                    if (loop.)
+                    break;
+            }
+
+            return new Position();
+        }
+
+        private enum TravelDirectionEnum
+        {
+            None,
+            NorthSouth,
+            SouthNorth,
+            WestEast,
+            EastWest,
+        }
 
         private HashSet<Position> GetPositionNeibours(Position position, HashSet<Position> inactiveTiles, HashSet<Position> activeTiles)
         {
