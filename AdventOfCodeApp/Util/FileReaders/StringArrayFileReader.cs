@@ -28,7 +28,7 @@ namespace AdventOfCodeApp.Util.FileReaders
         private string[] GetPerLineResult(string content)
         {
             var reader = new LineSplitFileReader();
-            return reader.GetReadableFileContent(content, true);
+            return reader.GetReadableFileContent(content, false);
         }
     }
 }
