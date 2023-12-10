@@ -33,7 +33,6 @@ namespace AdventOfCodeApp.DayClasses
 
             
             Position lastPos = FindStartingPosition(pipes);
-            // I know this from looking at the input, couldn't figure out how to do it
             Position currPos = FindNextPositionFromStart(pipes, lastPos);
             Position tempPos;
             char currPipe = pipes[currPos.Y, currPos.X];
@@ -104,7 +103,103 @@ namespace AdventOfCodeApp.DayClasses
 
         public long RunQuestion2(FileInfo file, bool isBenchmark = false)
         {
-            throw new NotImplementedException();
+            var reader = new CharMultiArrayFileReader();
+            var pipes = reader.GetReadableFileContent(file, isBenchmark);
+
+            long totalPositions = pipes.LongLength;
+
+            PositionQ2 lastPos = new(FindStartingPosition(pipes));
+            PositionQ2 currPos = new(FindNextPositionFromStart(pipes, lastPos.Position));
+            PositionQ2 tempPos;
+
+            
+
+            lastPos.SetNodeOut(currPos);
+
+            HashSet<PositionQ2> loop = new HashSet<PositionQ2>
+            {
+                lastPos
+            };
+            char currPipe = pipes[currPos.Y, currPos.X];
+
+            while (currPipe != 'S')
+            {
+                tempPos = new(GetNextPosition(currPipe, currPos.Position, lastPos.Position));
+                lastPos = currPos;
+                currPos = tempPos;
+                lastPos.SetNodeOut(currPos);
+                loop.Add(currPos);
+                currPipe = pipes[currPos.Y, currPos.X];
+            }
+
+            var activeNonLoopTiles = FindNonLoopEdges(loop, pipes);
+            HashSet<Position> inactiveTiles = new HashSet<Position>();
+            HashSet<Position> tempActiveTiles;
+
+
+            while (activeNonLoopTiles.Count > 0)
+            {
+                tempActiveTiles = new HashSet<Position>();
+                foreach ( var tile in activeNonLoopTiles)
+                {
+
+                }
+            }
+
+
+            return 0;
+        }
+
+        private Position TravelBetweenPipes(PositionQ2 Start)
+
+        private HashSet<Position> GetPositionNeibours(Position position, HashSet<Position> inactiveTiles, HashSet<Position> activeTiles)
+        {
+            Position newPos;
+            HashSet<Position> result = new HashSet<Position>();
+
+            for (int y = position.Y - 1; y >= position.Y + 1; y++)
+            {
+                newPos = new Position() { Y = y, X = position.X };
+                if (activeTiles.Contains(newPos) || inactiveTiles.Contains(newPos))
+                    continue;
+                result.Add(newPos);
+            }
+            for (int x = position.X - 1; x >= position.X + 1; x++)
+            {
+                newPos = new Position() { X = x, Y = position.Y };
+                if (activeTiles.Contains(newPos) || inactiveTiles.Contains(newPos))
+                    continue;
+                result.Add(newPos);
+            }
+            return result;
+        }
+
+        private HashSet<Position> FindNonLoopEdges(HashSet<PositionQ2> loop, char[,] pipes) 
+        {
+            PositionQ2 tempPos1;
+            PositionQ2 tempPos2;
+            HashSet<Position> result = new HashSet<Position>();
+
+            for (int x = 0; x < pipes.GetLength(1); x++)
+            {
+                tempPos1 = new PositionQ2(0, x);
+                tempPos2 = new PositionQ2(pipes.GetLength(0) - 1, x);
+                if (!loop.Contains(tempPos1))
+                    result.Add(tempPos1.Position);
+                if (!loop.Contains(tempPos2))
+                    result.Add(tempPos2.Position);
+            }
+
+            for (int y = 0;  y < pipes.GetLength(0); y++)
+            {
+                tempPos1 = new PositionQ2(y, 0);
+                tempPos2 = new PositionQ2(y, pipes.GetLength(1) - 1);
+                if (!loop.Contains(tempPos1))
+                    result.Add(tempPos1.Position);
+                if (!loop.Contains(tempPos2))
+                    result.Add(tempPos2.Position);
+            }
+            return result;
         }
 
         private Position GetNextPosition(char currPipe, Position currPosition, Position lastPosition)
@@ -153,6 +248,50 @@ namespace AdventOfCodeApp.DayClasses
         {
             public int X { get; set; }
             public int Y { get; set; }
+        }
+
+        private class PositionQ2 : IEquatable<PositionQ2>, IEquatable<Position>
+        {
+            private Position _position;
+
+            public int X => _position.X;
+            public int Y => _position.Y;
+
+            public Position Position => _position;
+
+            public PositionQ2? NodeIn { get; set; }
+            public PositionQ2? NodeOut { get; private set; }
+
+            public PositionQ2(Position position)
+            {
+                _position = position;
+            }
+
+            public PositionQ2(int y, int x)
+            {
+                _position = new Position() { Y = y, X = x };
+            }
+
+            public void SetNodeOut (PositionQ2 node)
+            {
+                NodeOut = node;
+                node.NodeIn = this;
+            }
+
+            public bool Equals(PositionQ2? other)
+            {
+                return other != null && other.X == X && other.Y == Y;
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(X, Y);
+            }
+
+            public bool Equals(Position? other)
+            {
+                return other != null && other.X == X && other.Y == Y;
+            }
         }
     }
 }

@@ -24,9 +24,9 @@ namespace AdventOfCodeApp
             //var app = new AdventOfCode(2023, 4);
 
             //app.RunTest(1);
-            app.RunActual(1);
+            //app.RunActual(1);
 
-            //app.RunTest(2);
+            app.RunTest(2);
             //app.RunActual(2);
 
             //Benchmark(app, 2);
